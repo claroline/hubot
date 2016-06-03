@@ -11,7 +11,6 @@ const appDir = `${__dirname}/..`
 module.exports = robot => {
   robot.respond(/respawn( (.+))?/i, res => {
     const branch = res.match[2] || 'master'
-    const exec = makeExec(res.reply.bind(res))
 
     res.reply(`Re-deploying myself from ${branch} branch...`)
 
