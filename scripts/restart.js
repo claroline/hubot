@@ -4,7 +4,7 @@
 // Commands:
 //   hubot refresh - re-deploy the bot with the latest sources
 
-const makeExec = require('./../exec-promise')
+const makeExec = require('./../lib/exec-promise')
 const exec = makeExec(console.log.bind(console))
 const appDir = `${__dirname}/..`
 
