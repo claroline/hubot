@@ -5,6 +5,7 @@
   "author": "purplefish32@gmail.com",
   "description": "A simple helpful robot for your Company",
   "dependencies": {
+    "githubhook": "^1.6.1",
     "hubot": "^2.18.0",
     "hubot-auth": "^1.2.0",
     "hubot-deploy": "^0.13.24",
