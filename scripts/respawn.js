@@ -18,6 +18,7 @@ module.exports = robot => {
     exec(`cd ${appDir}`)
       .then(() => exec('git fetch'))
       .then(() => exec(`git checkout ${branch}`))
+      .then(() => exec('git pull'))
       .then(() => exec('npm install'))
       .then(() => exec('supervisorctl restart clarobot'))
       .catch(err => res.reply(`Self deployment failed: ${err.message}`))
