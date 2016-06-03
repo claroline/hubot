@@ -5,10 +5,11 @@
 //   hubot respawn [branch] - re-deploy the bot from a github branch (defaults to master)
 
 const makeExec = require('./../lib/exec-promise')
+const exec = makeExec(console.log.bind(console))
 const appDir = `${__dirname}/..`
 
 module.exports = robot => {
-  robot.respond(/respawn( (.+))?/, res => {
+  robot.respond(/respawn( (.+))?/i, res => {
     const branch = res.match[2] || 'master'
     const exec = makeExec(res.reply.bind(res))
 
@@ -18,9 +19,7 @@ module.exports = robot => {
       .then(() => exec('git fetch'))
       .then(() => exec(`git checkout ${branch}`))
       .then(() => exec('npm install'))
-      .then(() => exec('echo "Going to restart now..."'))
-      .then(() => exec('sleep 1'))
       .then(() => exec('supervisorctl restart clarobot'))
-      .catch(() => res.reply('Self deployment failed'))
+      .catch(err => res.reply(`Self deployment failed: ${err.message}`))
   })
 }
