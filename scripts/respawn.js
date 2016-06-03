@@ -9,6 +9,23 @@ const exec = makeExec(console.log.bind(console))
 const appDir = `${__dirname}/..`
 
 module.exports = robot => {
+  var first = true
+
+  // if we're respawning, send a message to the room that trigger the respawn
+  // (the "first" stuff is due to a bug, see https://github.com/github/hubot/issues/880)
+  robot.brain.on('loaded', () => {
+    if (first) {
+      first = false
+
+      const respawnRoom = robot.brain.get('respawn-room')
+
+      if (respawnRoom) {
+        robot.messageRoom(respawnRoom, 'Back to life!')
+        robot.brain.set('respawn-room', null)
+      }
+    }
+  })
+
   robot.respond(/respawn( (.+))?/i, res => {
     const branch = res.match[2] || 'master'
 
@@ -20,6 +37,7 @@ module.exports = robot => {
       .then(() => exec('git pull'))
       .then(() => exec('npm install'))
       .then(() => exec('supervisorctl restart clarobot'))
+      .then(() => robot.brain.set('respawn-room', res.message.room))
       .catch(err => res.reply(`Self deployment failed: ${err.message}`))
   })
 }
