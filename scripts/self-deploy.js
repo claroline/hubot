@@ -17,7 +17,7 @@ module.exports = robot => {
     exec(`cd ${appDir}`)
       .then(() => exec('git fetch'))
       .then(() => exec(`git checkout ${branch}`))
-      .then(() => exec('npm install))
+      .then(() => exec('npm install'))
       .then(() => exec('echo "Going to restart now..."'))
       .then(() => exec('sleep 1'))
       .then(() => exec('supervisorctl restart clarobot'))
