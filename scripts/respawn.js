@@ -26,6 +26,14 @@ module.exports = robot => {
     }
   })
 
+  robot.hear(/(foo|bar|baz)/, res => {
+    robot.brain.set('last-msg', res.match[1])
+  })
+
+  robot.hear(/last/, res => {
+    res.reply(robot.brain.get('last-msg') || 'none')
+  })
+
   robot.respond(/respawn( (.+))?/i, res => {
     const branch = res.match[2] || 'master'
 
